@@ -2,10 +2,15 @@
 
 ### 🎥 Project Demo
 
-Click the image below to watch the complete demonstration of the
-SIH-26184 Cybercrime Predictive Analytics & Risk Intelligence Platform.
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=Wf7see8aCEA">
+    <img src="https://img.youtube.com/vi/Wf7see8aCEA/maxresdefault.jpg" width="900">
+  </a>
+</p>
 
-[![Project Demo](https://img.youtube.com/vi/Wf7see8aCEA/0.jpg)](https://www.youtube.com/watch?v=Wf7see8aCEA)
+<p align="center">
+  <b>▶ Click the image to watch the complete project demonstration</b>
+</p>
 
 ### SIH-26184
 
