@@ -1,0 +1,3 @@
+complaint_id,transaction_id,withdrawal_status,withdrawal_location,latitude,longitude,detected_at
+CC-TEST-001,TX1001,Withdrawn,ATM Park Street,22.5535,88.3520,2026-09-19 09:27:33
+1,TX1001,Withdrawn,ATM Kolkata,22.5726,88.3639,2026-09-19 22:18:17

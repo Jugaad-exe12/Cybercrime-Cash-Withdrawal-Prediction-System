@@ -1,0 +1,52 @@
+complaint_id,amount,district,withdrawal_location,risk
+1,50000,Kolkata,ATM Salt Lake,High
+2,12000,Howrah,ATM Shibpur,Medium
+3,75000,Kolkata,ATM Park Street,High
+4,8000,Hooghly,ATM Chinsurah,Low
+5,45000,Kolkata,ATM Garia,High
+6,15000,Howrah,ATM Shibpur,Medium
+7,9000,Hooghly,ATM Chandannagar,Low
+8,60000,Kolkata,ATM Dum Dum,High
+9,18000,Howrah,ATM Bally,Medium
+10,7000,Hooghly,ATM Serampore,Low
+11,55000,Kolkata,ATM Esplanade,High
+12,14000,Howrah,ATM Liluah,Medium
+13,10000,Hooghly,ATM Chinsurah,Low
+14,80000,Kolkata,ATM Behala,High
+15,22000,Howrah,ATM Shibpur,Medium
+16,6000,Hooghly,ATM Serampore,Low
+17,65000,Kolkata,ATM Salt Lake,High
+18,16000,Howrah,ATM Bally,Medium
+19,11000,Hooghly,ATM Chandannagar,Low
+20,72000,Kolkata,ATM Park Street,High
+21,13000,Howrah,ATM Liluah,Medium
+22,9500,Hooghly,ATM Chinsurah,Low
+23,58000,Kolkata,ATM Garia,High
+24,19000,Howrah,ATM Shibpur,Medium
+25,7500,Hooghly,ATM Serampore,Low
+26,90000,Kolkata,ATM Dum Dum,High
+27,17000,Howrah,ATM Bally,Medium
+28,8500,Hooghly,ATM Chandannagar,Low
+29,48000,Kolkata,ATM Behala,High
+30,21000,Howrah,ATM Liluah,Medium
+31,7000,Hooghly,ATM Chinsurah,Low
+32,67000,Kolkata,ATM Salt Lake,High
+33,14500,Howrah,ATM Shibpur,Medium
+34,10500,Hooghly,ATM Serampore,Low
+35,76000,Kolkata,ATM Park Street,High
+36,15500,Howrah,ATM Bally,Medium
+37,8500,Hooghly,ATM Chandannagar,Low
+38,52000,Kolkata,ATM Garia,High
+39,20000,Howrah,ATM Liluah,Medium
+40,9500,Hooghly,ATM Chinsurah,Low
+41,85000,Kolkata,ATM Dum Dum,High
+42,16500,Howrah,ATM Shibpur,Medium
+43,11500,Hooghly,ATM Serampore,Low
+44,62000,Kolkata,ATM Behala,High
+45,23000,Howrah,ATM Bally,Medium
+46,6500,Hooghly,ATM Chandannagar,Low
+47,70000,Kolkata,ATM Salt Lake,High
+48,18000,Howrah,ATM Liluah,Medium
+49,9000,Hooghly,ATM Chinsurah,Low
+50,78000,Kolkata,ATM Park Street,HighCC-20260918192626,UPI Fraud,2026-09-18T12:18,2026-09-18T13:24,50000,Sodepur,1,123,Otp fraud
+CC-20260919092133,ATM fraud,2026-09-18T09:20,2026-09-18T13:23,500000,Sodepur,TX1001,123,Cyber Fraud

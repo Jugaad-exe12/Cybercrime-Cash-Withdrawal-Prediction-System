@@ -1,0 +1,5 @@
+transaction_id,crime_type,location,withdrawal_location,status,amount
+TX1001,Cyber Fraud,Kolkata,ATM Park Street,Withdrawn,25000
+TX1002,Cyber Fraud,Howrah,ATM Howrah,Withdrawn,50000
+TX1003,ATM Fraud,Kolkata,ATM Salt Lake,Pending,15000
+TX1004,Cyber Fraud,Salt Lake,ATM Sector V,Withdrawn,30000

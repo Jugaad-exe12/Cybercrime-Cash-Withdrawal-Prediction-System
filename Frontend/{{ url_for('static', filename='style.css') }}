@@ -1,0 +1,430 @@
+/* =====================================================
+   GENERAL PAGE
+   ===================================================== */
+
+body {
+
+    font-family: Arial, Helvetica, sans-serif;
+    background:#071A2B ;
+    margin: 0;
+    padding: 30px;
+    color: #222;
+
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+   ===================================================== */
+
+.main-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #1f2937;
+
+}
+
+
+header p {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+
+/* =====================================================
+   CARD
+   ===================================================== */
+
+.card {
+
+    background: white;
+    padding: 30px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.card h2 {
+
+    margin-top: 0;
+
+    color: #1f2937;
+
+}
+
+
+/* =====================================================
+   FORM
+   ===================================================== */
+
+
+form {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+label {
+
+    font-weight: bold;
+
+    margin-top: 15px;
+
+    margin-bottom: 6px;
+
+}
+
+
+input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 13px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 6px;
+
+    font-size: 15px;
+
+}
+
+
+input:focus {
+
+    outline: none;
+
+    border-color: #4b5563;
+
+}
+
+
+input[readonly] {
+
+    background: #f3f4f6;
+
+}
+
+
+/* =====================================================
+   BUTTON
+   ===================================================== */
+
+button {
+
+    margin-top: 25px;
+
+    padding: 14px 20px;
+
+    background: #222;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 6px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+}
+
+
+button:hover {
+
+    background: #444;
+
+}
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.error-box {
+
+    background: #fff1f2;
+
+    border-left: 5px solid #dc2626;
+
+    padding: 20px;
+
+    margin-bottom: 25px;
+
+    border-radius: 6px;
+
+}
+
+
+.error-box h3 {
+
+    margin-top: 0;
+
+    color: #b91c1c;
+
+}
+
+
+.error-box p {
+
+    color: #7f1d1d;
+
+}
+
+
+/* =====================================================
+   RESULT
+   ===================================================== */
+
+.result-card {
+
+    border-left: 5px solid #2563eb;
+
+}
+
+
+.result-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid #e5e7eb;
+
+}
+
+
+.result-item strong {
+
+    color: #374151;
+
+}
+
+
+.result-item span {
+
+    text-align: right;
+
+}
+
+
+.risk {
+
+    font-weight: bold;
+
+}
+
+
+/* =====================================================
+   TIMESTAMP
+   ===================================================== */
+
+.timestamp {
+
+    background: #f8fafc;
+
+    padding: 15px;
+
+    margin-top: 10px;
+
+    border-radius: 6px;
+
+}
+
+
+.timestamp span {
+
+    font-family: monospace;
+
+}
+
+
+/* =====================================================
+   MAP
+   ===================================================== */
+
+.map-container {
+
+    width: 100%;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
+    border: 1px solid #ddd;
+
+}
+
+
+.map-container iframe {
+
+    display: block;
+
+    width: 100%;
+
+    border: none;
+
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+footer {
+
+    text-align: center;
+
+    color: #777;
+
+    padding: 20px;
+
+    margin-top: 20px;
+
+}
+
+
+footer p {
+
+    margin: 5px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    body {
+
+        padding: 15px;
+
+    }
+
+
+    header h1 {
+
+        font-size: 24px;
+
+    }
+
+
+    .card {
+
+        padding: 20px;
+
+    }
+
+
+    .result-item {
+
+        flex-direction: column;
+
+        gap: 5px;
+
+    }
+
+
+    .result-item span {
+
+        text-align: left;
+
+    }
+
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background: rgb(159, 158, 158);
+    border-radius: 10px;
+    position: sticky;
+    top:0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,217,255,0.15);
+    margin-bottom: 10px;
+
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #030000;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+}
+
+.login-form {
+    display: none;
+    width: 350px;
+    padding: 30px;
+    margin: 50px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.login-form input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    box-sizing: border-box;
+}
+
+
+.close-btn {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+}

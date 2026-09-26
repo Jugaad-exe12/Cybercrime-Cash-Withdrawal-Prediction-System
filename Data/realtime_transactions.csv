@@ -1,0 +1,4 @@
+transaction_id,amount,status,location,withdrawal_location,latitude,longitude
+TX1001,75000,withdrawn,Kolkata,ATM Kolkata,22.5726,88.3639
+TX1002,15000,pending,Kolkata,ATM Kolkata,22.5726,88.3639
+TX1003,65000,pending,Howrah,ATM Howrah,22.5958,88.2636

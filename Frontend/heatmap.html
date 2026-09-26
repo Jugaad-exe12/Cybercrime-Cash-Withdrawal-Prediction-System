@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Cybercrime GIS Intelligence Map
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <style>
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        #map {
+
+            width: 100%;
+            height: 100vh;
+
+        }
+
+        .map-title {
+
+            position: absolute;
+
+            top: 10px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 1000;
+
+            background: white;
+
+            padding: 12px 20px;
+
+            border-radius: 8px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.25);
+
+        }
+
+        .status-box {
+
+            position: absolute;
+
+            bottom: 20px;
+            left: 20px;
+
+            z-index: 1000;
+
+            background: white;
+
+            padding: 10px 15px;
+
+            border-radius: 8px;
+
+            font-family: Arial, sans-serif;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.25);
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="map-title">
+
+    Cybercrime GIS Intelligence Map
+
+</div>
+
+
+<div id="map"></div>
+
+
+<div
+    class="status-box"
+    id="statusBox"
+>
+
+    Loading GIS intelligence...
+
+</div>
+
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<script>
+
+
+// =========================================================
+// MAP
+// =========================================================
+
+const map = L.map(
+    "map"
+).setView(
+
+    [22.5726, 88.3639],
+
+    11
+
+);
+
+
+// =========================================================
+// BASE MAP
+// =========================================================
+
+L.tileLayer(
+
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+    {
+
+        maxZoom: 19,
+
+        attribution:
+            "&copy; OpenStreetMap contributors"
+
+    }
+
+).addTo(map);
+
+
+// =========================================================
+// LAYER GROUPS
+// =========================================================
+
+const withdrawalLayer =
+    L.layerGroup().addTo(map);
+
+const atmLayer =
+    L.layerGroup().addTo(map);
+
+const policeLayer =
+    L.layerGroup().addTo(map);
+
+const riskLayer =
+    L.layerGroup().addTo(map);
+
+
+// =========================================================
+// LOAD WITHDRAWAL DATA
+// =========================================================
+
+async function loadWithdrawals() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/gis_withdrawals"
+            );
+
+        const data =
+            await response.json();
+
+
+        data.forEach(
+            function(item) {
+
+                const lat =
+                    parseFloat(
+                        item.latitude
+                    );
+
+                const lon =
+                    parseFloat(
+                        item.longitude
+                    );
+
+
+                if (
+                    Number.isNaN(lat)
+                    ||
+                    Number.isNaN(lon)
+                ) {
+
+                    return;
+
+                }
+
+
+                const marker =
+                    L.marker(
+                        [lat, lon]
+                    );
+
+
+                marker.bindPopup(`
+
+                    <b>
+                        Withdrawal Detected
+                    </b>
+
+                    <hr>
+
+                    <b>Location:</b>
+                    ${item.location}
+
+                    <br><br>
+
+                    <b>Transaction:</b>
+                    ${item.transaction_id}
+
+                    <br><br>
+
+                    <b>Complaint:</b>
+                    ${item.complaint_id}
+
+                    <br><br>
+
+                    <b>Status:</b>
+                    ${item.status}
+
+                    <br><br>
+
+                    <b>Detected:</b>
+                    ${item.detected_at}
+
+                `);
+
+
+                marker.addTo(
+                    withdrawalLayer
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Withdrawal error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// LOAD ATM DATA
+// =========================================================
+
+async function loadATMs() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/nearby_atms"
+            );
+
+        const data =
+            await response.json();
+
+
+        data.forEach(
+            function(item) {
+
+                const lat =
+                    parseFloat(
+                        item.latitude
+                    );
+
+                const lon =
+                    parseFloat(
+                        item.longitude
+                    );
+
+
+                if (
+                    Number.isNaN(lat)
+                    ||
+                    Number.isNaN(lon)
+                ) {
+
+                    return;
+
+                }
+
+
+                const marker =
+                    L.circleMarker(
+
+                        [lat, lon],
+
+                        {
+
+                            radius: 7
+
+                        }
+
+                    );
+
+
+                marker.bindPopup(`
+
+                    <b>
+                        ATM
+                    </b>
+
+                    <hr>
+
+                    <b>Name:</b>
+                    ${item.atm_name || item.name || "ATM"}
+
+                    <br><br>
+
+                    <b>Distance:</b>
+                    ${item.distance_km || "N/A"}
+                    km
+
+                    <br><br>
+
+                    <b>Coordinates:</b>
+                    ${lat}, ${lon}
+
+                `);
+
+
+                marker.addTo(
+                    atmLayer
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "ATM error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// LOAD POLICE STATIONS
+// =========================================================
+
+async function loadPoliceStations() {
+
+    /*
+       Police station data is read from the
+       backend through a simple fetch.
+
+       If the backend does not expose a
+       police-data endpoint yet, this section
+       safely remains empty.
+    */
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/police_stations"
+            );
+
+
+        if (!response.ok) {
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        data.forEach(
+            function(item) {
+
+                const lat =
+                    parseFloat(
+                        item.latitude
+                    );
+
+                const lon =
+                    parseFloat(
+                        item.longitude
+                    );
+
+
+                if (
+                    Number.isNaN(lat)
+                    ||
+                    Number.isNaN(lon)
+                ) {
+
+                    return;
+
+                }
+
+
+                const marker =
+                    L.circleMarker(
+
+                        [lat, lon],
+
+                        {
+
+                            radius: 8
+
+                        }
+
+                    );
+
+
+                marker.bindPopup(`
+
+                    <b>
+                        Police Station
+                    </b>
+
+                    <hr>
+
+                    <b>
+                        ${item.station_name}
+                    </b>
+
+                    <br><br>
+
+                    Coordinates:
+                    ${lat}, ${lon}
+
+                `);
+
+
+                marker.addTo(
+                    policeLayer
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.log(
+            "Police station layer not available yet."
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// LOAD RISK SCORE
+// =========================================================
+
+async function loadRiskScore() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/risk_score"
+            );
+
+        const data =
+            await response.json();
+
+
+        const center =
+            map.getCenter();
+
+
+        const riskCircle =
+            L.circle(
+
+                center,
+
+                {
+
+                    radius: 2500,
+
+                    fillOpacity: 0.15,
+
+                    weight: 2
+
+                }
+
+            );
+
+
+        riskCircle.bindPopup(`
+
+            <b>
+                Cybercrime Risk Area
+            </b>
+
+            <hr>
+
+            <b>Risk Score:</b>
+            ${data.score}/100
+
+            <br><br>
+
+            <b>Risk Level:</b>
+            ${data.level}
+
+        `);
+
+
+        riskCircle.addTo(
+            riskLayer
+        );
+
+
+        document.getElementById(
+            "statusBox"
+        ).innerHTML =
+
+            "GIS intelligence loaded | "
+            + "Risk Score: "
+            + data.score
+            + "/100";
+
+
+    } catch (error) {
+
+        document.getElementById(
+            "statusBox"
+        ).innerHTML =
+            "GIS data loaded.";
+
+    }
+
+}
+
+
+// =========================================================
+// LAYER CONTROL
+// =========================================================
+
+const overlays = {
+
+    "Withdrawals":
+        withdrawalLayer,
+
+    "Nearby ATMs":
+        atmLayer,
+
+    "Police Stations":
+        policeLayer,
+
+    "Risk Area":
+        riskLayer
+
+};
+
+
+L.control.layers(
+    null,
+    overlays,
+    {
+        collapsed: false
+    }
+).addTo(map);
+
+
+// =========================================================
+// LOAD EVERYTHING
+// =========================================================
+
+async function loadGIS() {
+
+    await loadWithdrawals();
+
+    await loadATMs();
+
+    await loadPoliceStations();
+
+    await loadRiskScore();
+
+}
+
+
+loadGIS();
+
+
+</script>
+
+</body>
+
+</html>

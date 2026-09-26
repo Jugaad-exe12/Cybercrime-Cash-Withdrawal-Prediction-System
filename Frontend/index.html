@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Cybercrime Predictive Analytics System
+    </title>
+
+
+    <!-- =====================================================
+         FLASK STATIC CSS
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+
+    <!-- =====================================================
+         EXTRA PAGE STYLING
+    ====================================================== -->
+
+    <style>
+
+        /* =====================================================
+           PAGE BACKGROUND
+        ====================================================== */
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            min-height: 100%;
+
+        }
+
+
+        body {
+
+            background-color: #062B45;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(6, 43, 69, 0.70),
+                    rgba(6, 43, 69, 0.70)
+                ),
+
+                url("{{ url_for('static', filename='bgimage.png') }}");
+
+            background-size: cover;
+
+            background-position: center center;
+
+            background-repeat: no-repeat;
+
+            background-attachment: fixed;
+
+            min-height: 100vh;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ====================================================== */
+
+        .main-container {
+
+            position: relative;
+
+            z-index: 1;
+
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .navbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            width: 100%;
+
+            min-height: 70px;
+
+            box-sizing: border-box;
+
+            padding: 8px 25px;
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ====================================================== */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            background: transparent;
+
+        }
+
+
+        .logo img {
+
+            height: 60px;
+
+            width: 100px;
+
+            max-width: 180px;
+
+            object-fit: contain;
+
+            display: block;
+
+            background: transparent;
+
+            border: none;
+
+            box-shadow: none;
+
+        }
+
+
+        /* =====================================================
+           NAVIGATION LINKS
+        ====================================================== */
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =====================================================
+           POPUP SECTIONS
+        ====================================================== */
+
+        .about-section,
+        .login-form,
+        .signup-form {
+
+            display: none;
+
+        }
+
+
+        /* =====================================================
+           CLOSE BUTTON
+        ====================================================== */
+
+        .close-btn {
+
+            float: right;
+
+            background: #ff3b3b;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            padding: 5px 10px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .close-btn:hover {
+
+            background: #d90000;
+
+        }
+
+
+        /* =====================================================
+           SYSTEM BOX
+        ====================================================== */
+
+        .system-box {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            background: #062B45;
+
+            border: 2px solid #00D9FF;
+
+            box-shadow:
+                0 0 12px rgba(0, 217, 255, 0.25);
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           RISK
+        ====================================================== */
+
+        .risk {
+
+            font-weight: bold;
+
+        }
+
+
+        .high-risk {
+
+            color: #ff3b3b;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =====================================================
+           MAP
+        ====================================================== */
+
+        .map-container {
+
+            width: 100%;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+        }
+
+
+        .map-container iframe {
+
+            display: block;
+
+            width: 100%;
+
+            min-height: 550px;
+
+            border: none;
+
+        }
+
+
+        /* =====================================================
+           RESULT ITEMS
+        ====================================================== */
+
+        .result-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 10px 0;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.15);
+
+        }
+
+
+        .result-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        /* =====================================================
+           ERROR BOX
+        ====================================================== */
+
+        .error-box {
+
+            margin: 20px 0;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            background: #4b1010;
+
+            border: 2px solid #ff3b3b;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           MOBILE RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 15px;
+
+            }
+
+
+            .nav-links {
+
+                gap: 15px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+            }
+
+
+            .logo img {
+
+                height: 55px;
+
+            }
+
+
+            .result-item {
+
+                flex-direction: column;
+
+                gap: 5px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MAIN CONTAINER
+    ====================================================== -->
+
+    <div class="main-container">
+
+
+        <!-- =====================================================
+             NAVIGATION BAR
+        ====================================================== -->
+
+        <nav class="navbar">
+
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <img
+                    src="{{ url_for('static', filename='logo.png') }}"
+                    alt="Cyphora Cybercrime Logo">
+
+            </div>
+
+
+            <!-- NAVIGATION LINKS -->
+
+            <div class="nav-links">
+
+
+                <a href="/">
+                    Home
+                </a>
+
+
+                <a href="#" id="aboutBtn">
+                    About Us
+                </a>
+
+
+                <a href="#" id="signupBtn">
+                    Signup
+                </a>
+
+
+                <a href="#" id="loginBtn">
+                    Login
+                </a>
+
+
+            </div>
+
+        </nav>
+
+
+
+        <!-- =====================================================
+             LOGIN FORM
+        ====================================================== -->
+
+        <section
+            id="loginForm"
+            class="card login-form"
+        >
+
+
+            <button
+                type="button"
+                id="closeLogin"
+                class="close-btn"
+            >
+
+                X
+
+            </button>
+
+
+            <h2>
+                Login
+            </h2>
+
+
+            <form id="loginFormElement">
+
+
+                <label for="loginEmail">
+                    Email
+                </label>
+
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+
+                <label for="loginPassword">
+                    Password
+                </label>
+
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    id="submitLogin"
+                >
+
+                    Login
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             SIGNUP FORM
+        ====================================================== -->
+
+        <section
+            id="signupForm"
+            class="card signup-form"
+        >
+
+
+            <button
+                type="button"
+                id="closeSignup"
+                class="close-btn"
+            >
+
+                X
+
+            </button>
+
+
+            <h2>
+                Signup
+            </h2>
+
+
+            <form id="signupFormElement">
+
+
+                <label for="signupName">
+                    Name
+                </label>
+
+
+                <input
+                    type="text"
+                    id="signupName"
+                    placeholder="Enter your name"
+                    required
+                >
+
+
+                <label for="signupEmail">
+                    Email
+                </label>
+
+
+                <input
+                    type="email"
+                    id="signupEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+
+                <label for="signupPassword">
+                    Password
+                </label>
+
+
+                <input
+                    type="password"
+                    id="signupPassword"
+                    placeholder="Create password"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    id="signBtn"
+                >
+
+                    Signup
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             ABOUT US
+        ====================================================== -->
+
+        <section
+            id="aboutSection"
+            class="card about-section"
+        >
+
+
+            <h2>
+                About Us
+            </h2>
+
+
+            <p>
+
+                Our system is a predictive analytics platform
+                designed to support cybercrime investigation.
+                It analyzes cybercrime complaint and transaction
+                data to identify patterns and forecast likely
+                cash withdrawal locations.
+
+            </p>
+
+
+            <p>
+
+                The main objective of this system is to help
+                investigators identify potential high-risk
+                locations in advance and support timely and
+                proactive intervention using data analytics,
+                machine learning and geographical visualization.
+
+            </p>
+
+
+            <button
+                type="button"
+                id="closeAbout"
+            >
+
+                Close
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             REAL-TIME MONITORING
+        ====================================================== -->
+
+        <section class="card">
+
+
+            <h2>
+                Real-Time Cybercrime Monitoring
+            </h2>
+
+
+            <div
+                id="monitoring-alert"
+                class="system-box"
+            >
+
+                Checking transactions...
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             COMPLAINT INFORMATION
+        ====================================================== -->
+
+        <section class="card">
+
+
+            <h2>
+                Complaint Information
+            </h2>
+
+
+            <form
+                action="{{ url_for('predict') }}"
+                method="POST"
+                id="box"
+            >
+
+
+                <!-- Complaint ID -->
+
+                <label for="complaint_id">
+                    Complaint ID
+                </label>
+
+
+                <input
+                    type="text"
+                    id="complaint_id"
+                    name="complaint_id"
+                    placeholder="Enter Complaint ID"
+                    value="{{ complaint_id or '' }}"
+                    required
+                >
+
+
+                <!-- Transaction ID -->
+
+                <label for="transaction_id">
+                    Transaction ID
+                </label>
+
+
+                <input
+                    type="text"
+                    id="transaction_id"
+                    name="transaction_id"
+                    placeholder="Enter Transaction ID"
+                >
+
+
+                <!-- Transaction Amount -->
+
+                <label for="amount">
+                    Transaction Amount
+                </label>
+
+
+                <input
+                    type="number"
+                    id="amount"
+                    name="amount"
+                    placeholder="Enter Transaction Amount"
+                    value="{{ amount or '' }}"
+                    required
+                >
+
+
+                <!-- District -->
+
+                <label for="district">
+                    District
+                </label>
+
+
+                <input
+                    type="text"
+                    id="district"
+                    name="district"
+                    placeholder="Enter District"
+                    value="{{ district or '' }}"
+                    required
+                >
+
+
+                <!-- Crime Date -->
+
+                <label for="crime_datetime">
+                    Crime Date & Time
+                </label>
+
+
+                <input
+                    type="datetime-local"
+                    id="crime_datetime"
+                    name="crime_datetime"
+                >
+
+
+                <!-- Complaint Date -->
+
+                <label for="complaint_datetime">
+                    Complaint Date & Time
+                </label>
+
+
+                <input
+                    type="datetime-local"
+                    id="complaint_datetime"
+                    name="complaint_datetime"
+                >
+
+
+                <!-- Latitude -->
+
+                <label for="latitude">
+                    Latitude
+                </label>
+
+
+                <input
+                    type="text"
+                    id="latitude"
+                    name="latitude"
+                    placeholder="Automatically detected"
+                    value="{{ latitude or '' }}"
+                    readonly
+                >
+
+
+                <!-- Longitude -->
+
+                <label for="longitude">
+                    Longitude
+                </label>
+
+
+                <input
+                    type="text"
+                    id="longitude"
+                    name="longitude"
+                    placeholder="Automatically detected"
+                    value="{{ longitude or '' }}"
+                    readonly
+                >
+
+
+                <!-- Predict -->
+
+                <button
+                    type="submit"
+                    id="withdrawal"
+                >
+
+                    Predict Withdrawal Location
+
+                </button>
+
+
+            </form>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             WITHDRAWAL VERIFICATION
+        ====================================================== -->
+
+        <section class="card">
+
+
+            <h2>
+                Withdrawal Verification
+            </h2>
+
+
+            <p>
+
+                If the complaint was submitted more than
+                2 hours after the reported crime, check whether
+                the transaction was already withdrawn.
+
+            </p>
+
+
+            <button
+                type="button"
+                onclick="checkWithdrawal()"
+                id="check"
+            >
+
+                Check Withdrawal
+
+            </button>
+
+
+            <div
+                id="withdrawal-result"
+                class="system-box"
+            >
+
+                Waiting for verification...
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             ERROR
+        ====================================================== -->
+
+        {% if error %}
+
+        <section class="error-box">
+
+
+            <h3>
+                Error
+            </h3>
+
+
+            <p>
+                {{ error }}
+            </p>
+
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =====================================================
+             PREDICTION RESULT
+        ====================================================== -->
+
+        {% if withdrawal_location %}
+
+        <section class="card result-card">
+
+
+            <h2>
+                Prediction Result
+            </h2>
+
+
+            <!-- Complaint ID -->
+
+            <div class="result-item">
+
+                <strong style = "color:white">
+                    Complaint ID:
+                </strong>
+
+                <span>
+                    {{ complaint_id }}
+                </span>
+
+            </div>
+
+
+            <!-- Transaction Amount -->
+
+            <div class="result-item">
+
+                <strong style = "color:white">
+                    Transaction Amount:
+                </strong>
+
+                <span>
+                    ₹{{ amount }}
+                </span>
+
+            </div>
+
+
+            <!-- District -->
+
+            <div class="result-item">
+
+                <strong  style = "color:white">
+                    District:
+                </strong>
+
+                <span>
+                    {{ district }}
+                </span>
+
+            </div>
+
+
+            <!-- Latitude / Longitude -->
+
+            {% if latitude and longitude %}
+
+            <div class="result-item">
+
+                <strong  style = "color:white">
+                    Selected Latitude:
+                </strong>
+
+                <span>
+                    {{ latitude }}
+                </span>
+
+            </div>
+
+
+            <div class="result-item">
+
+                <strong style = "color:white">
+                    Selected Longitude:
+                </strong>
+
+                <span>
+                    {{ longitude }}
+                </span>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- Likely Withdrawal Location -->
+
+            <div class="result-item">
+
+                <strong style = "color:white">
+                    Likely Withdrawal Location:
+                </strong>
+
+                <span>
+                    {{ withdrawal_location }}
+                </span>
+
+            </div>
+
+
+            <!-- Risk Level -->
+
+            <div class="result-item">
+
+                <strong style = "color:white">
+                    Risk Level:
+                </strong>
+
+                <span class="risk">
+
+                    {{ risk }}
+
+                </span>
+
+            </div>
+
+
+            <!-- Timestamp -->
+
+            <div class="result-item">
+
+                <strong style = "color:white">
+                    Prediction Timestamp:
+                </strong>
+
+                <span>
+                    {{ timestamp }}
+
+                </span>
+
+            </div>
+
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =====================================================
+             GIS MAP
+        ====================================================== -->
+
+        <section class="card">
+
+
+            <h2>
+                GIS-Based Cybercrime Risk Map
+            </h2>
+
+
+            <p>
+
+                Withdrawal locations, ATMs, police stations
+                and risk areas are displayed on the map.
+
+            </p>
+
+
+            <div class="map-container">
+
+
+                <iframe
+                    src="{{ url_for('static', filename='heatmap.html') }}"
+                    width="100%"
+                    height="550"
+                    frameborder="0"
+                    title="Cybercrime Risk Map"
+                >
+
+                </iframe>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             RISK SCORE
+        ====================================================== -->
+
+        <section class="card">
+
+
+            <h2>
+                Current Cybercrime Risk
+            </h2>
+
+
+            <div
+                id="risk-information"
+                class="system-box"
+            >
+
+                Loading risk score...
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             POLICE / BANK ALERT
+        ====================================================== -->
+
+        <section class="card">
+
+
+            <h2>
+                Law Enforcement & Bank Alert
+            </h2>
+
+
+            <button
+                type="button"
+                onclick="generateAlerts()"
+                id="Alert"
+            >
+
+                Generate Police & Bank Alert
+
+            </button>
+
+
+            <div
+                id="alert-result"
+                class="system-box"
+            >
+
+                No alert generated yet.
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer>
+
+
+            <p>
+                Cybercrime Predictive Analytics System
+            </p>
+
+
+            <p>
+                GIS + Machine Learning + Predictive Analytics
+            </p>
+
+
+        </footer>
+
+
+    </div>
+
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+
+        /* =========================================================
+           ABOUT US
+        ========================================================= */
+
+        const aboutBtn =
+            document.getElementById("aboutBtn");
+
+        const aboutSection =
+            document.getElementById("aboutSection");
+
+        const closeAbout =
+            document.getElementById("closeAbout");
+
+
+        if (
+            aboutBtn &&
+            aboutSection &&
+            closeAbout
+        ) {
+
+            aboutBtn.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    aboutSection.style.display =
+                        "block";
+
+                    aboutSection.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+                }
+            );
+
+
+            closeAbout.addEventListener(
+                "click",
+                function () {
+
+                    aboutSection.style.display =
+                        "none";
+
+                }
+            );
+
+        }
+
+
+
+        /* =========================================================
+           LOGIN
+        ========================================================= */
+
+        const loginBtn =
+            document.getElementById("loginBtn");
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const closeLogin =
+            document.getElementById("closeLogin");
+
+
+        if (
+            loginBtn &&
+            loginForm &&
+            closeLogin
+        ) {
+
+            loginBtn.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    loginForm.style.display =
+                        "block";
+
+                    loginForm.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+                }
+            );
+
+
+            closeLogin.addEventListener(
+                "click",
+                function () {
+
+                    loginForm.style.display =
+                        "none";
+
+                }
+            );
+
+        }
+
+
+        const loginFormElement =
+            document.getElementById(
+                "loginFormElement"
+            );
+
+
+        if (loginFormElement) {
+
+            loginFormElement.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+                    alert("Login Successful!");
+
+                }
+            );
+
+        }
+
+
+
+        /* =========================================================
+           SIGNUP
+        ========================================================= */
+
+        const signupBtn =
+            document.getElementById("signupBtn");
+
+        const signupForm =
+            document.getElementById("signupForm");
+
+        const closeSignup =
+            document.getElementById("closeSignup");
+
+
+        if (
+            signupBtn &&
+            signupForm &&
+            closeSignup
+        ) {
+
+            signupBtn.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    signupForm.style.display =
+                        "block";
+
+                    signupForm.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+                }
+            );
+
+
+            closeSignup.addEventListener(
+                "click",
+                function () {
+
+                    signupForm.style.display =
+                        "none";
+
+                }
+            );
+
+        }
+
+
+        const signupFormElement =
+            document.getElementById(
+                "signupFormElement"
+            );
+
+
+        if (signupFormElement) {
+
+            signupFormElement.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+                    alert("Signup Successful!");
+
+                }
+            );
+
+        }
+
+
+
+        /* =========================================================
+           REAL-TIME MONITORING
+        ========================================================= */
+
+        async function refreshMonitoring() {
+
+            const box =
+                document.getElementById(
+                    "monitoring-alert"
+                );
+
+
+            if (!box) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/realtime_alert"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Monitoring endpoint unavailable"
+                    );
+
+                }
+
+
+                const alerts =
+                    await response.json();
+
+
+                if (
+                    !Array.isArray(alerts) ||
+                    alerts.length === 0
+                ) {
+
+                    box.innerHTML =
+                        "<strong>Monitoring:</strong> " +
+                        "No new suspicious transaction.";
+
+                    return;
+
+                }
+
+
+                let html =
+                    "<strong>Monitoring Alert</strong><br><br>";
+
+
+                alerts.forEach(
+                    function (alert) {
+
+                        html += `
+
+                            <div style="
+                                padding:10px;
+                                margin-bottom:8px;
+                                border:1px solid #00D9FF;
+                                border-radius:6px;
+                            ">
+
+                                <b>Transaction:</b>
+                                ${alert.transaction_id || "N/A"}
+
+                                <br>
+
+                                <b>Amount:</b>
+                                ₹${alert.amount || "N/A"}
+
+                                <br>
+
+                                <b>Location:</b>
+                                ${alert.location || "N/A"}
+
+                                <br>
+
+                                <b>Risk:</b>
+                                ${alert.risk || "HIGH RISK"}
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+
+                box.innerHTML = html;
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Monitoring error:",
+                    error
+                );
+
+
+                box.innerHTML =
+                    "<strong>Monitoring:</strong> " +
+                    "Unable to connect to monitoring service.";
+
+            }
+
+        }
+
+
+
+        /* =========================================================
+           RISK SCORE
+        ========================================================= */
+
+        async function loadRiskScore() {
+
+            const box =
+                document.getElementById(
+                    "risk-information"
+                );
+
+
+            if (!box) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/risk_score"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Risk endpoint unavailable"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                box.innerHTML = `
+
+                    <strong>
+                        Risk Score:
+                    </strong>
+
+                    ${data.score ?? "N/A"}/100
+
+                    <br><br>
+
+                    <strong>
+                        Risk Level:
+                    </strong>
+
+                    ${data.level ?? "Unknown"}
+
+                `;
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Risk score error:",
+                    error
+                );
+
+
+                box.innerHTML =
+                    "Risk score currently unavailable.";
+
+            }
+
+        }
+
+
+
+        /* =========================================================
+           WITHDRAWAL VERIFICATION
+        ========================================================= */
+
+        async function checkWithdrawal() {
+
+            const complaintElement =
+                document.getElementById(
+                    "complaint_id"
+                );
+
+
+            const transactionElement =
+                document.getElementById(
+                    "transaction_id"
+                );
+
+
+            const crimeElement =
+                document.getElementById(
+                    "crime_datetime"
+                );
+
+
+            const complaintDateElement =
+                document.getElementById(
+                    "complaint_datetime"
+                );
+
+
+            const resultBox =
+                document.getElementById(
+                    "withdrawal-result"
+                );
+
+
+            if (!resultBox) {
+
+                return;
+
+            }
+
+
+            const complaintId =
+                complaintElement
+                    ? complaintElement.value.trim()
+                    : "";
+
+
+            const transactionId =
+                transactionElement
+                    ? transactionElement.value.trim()
+                    : "";
+
+
+            const crimeDatetime =
+                crimeElement
+                    ? crimeElement.value
+                    : "";
+
+
+            const complaintDatetime =
+                complaintDateElement
+                    ? complaintDateElement.value
+                    : "";
+
+
+            if (!complaintId) {
+
+                resultBox.innerHTML =
+                    "Please enter Complaint ID.";
+
+                return;
+
+            }
+
+
+            if (!transactionId) {
+
+                resultBox.innerHTML =
+                    "Please enter Transaction ID.";
+
+                return;
+
+            }
+
+
+            if (!crimeDatetime) {
+
+                resultBox.innerHTML =
+                    "Please enter Crime Date & Time.";
+
+                return;
+
+            }
+
+
+            if (!complaintDatetime) {
+
+                resultBox.innerHTML =
+                    "Please enter Complaint Date & Time.";
+
+                return;
+
+            }
+
+
+            resultBox.innerHTML =
+                "Checking transaction...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/delayed_complaint_check",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                complaint_id:
+                                    complaintId,
+
+                                transaction_id:
+                                    transactionId,
+
+                                crime_datetime:
+                                    crimeDatetime,
+
+                                complaint_datetime:
+                                    complaintDatetime
+
+                            })
+
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Withdrawal verification endpoint unavailable"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    data.status ===
+                    "WITHDRAWN_DETECTED"
+                ) {
+
+                    resultBox.innerHTML = `
+
+                        <strong>
+                            WITHDRAWAL DETECTED
+                        </strong>
+
+                        <br><br>
+
+                        Transaction:
+                        ${data.transaction_id || "N/A"}
+
+                        <br>
+
+                        Status:
+                        ${data.withdrawal_status || "N/A"}
+
+                        <br>
+
+                        Location:
+                        ${data.withdrawal_location || "N/A"}
+
+                        <br>
+
+                        Latitude:
+                        ${data.latitude ?? "N/A"}
+
+                        <br>
+
+                        Longitude:
+                        ${data.longitude ?? "N/A"}
+
+                        <br>
+
+                        Delay:
+                        ${data.delay_hours ?? "N/A"} hours
+
+                    `;
+
+
+                    const mapFrame =
+                        document.querySelector(
+                            ".map-container iframe"
+                        );
+
+
+                    if (mapFrame) {
+
+                        mapFrame.src =
+                            mapFrame.src;
+
+                    }
+
+
+                    generateAlerts();
+
+                }
+
+
+                else {
+
+                    resultBox.innerHTML = `
+
+                        <strong>
+                            ${data.status ||
+                            "Verification Complete"}
+                        </strong>
+
+                        <br><br>
+
+                        ${data.message || ""}
+
+                    `;
+
+                }
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Withdrawal verification error:",
+                    error
+                );
+
+
+                resultBox.innerHTML =
+                    "Unable to check withdrawal.";
+
+            }
+
+        }
+
+
+
+        /* =========================================================
+           POLICE + BANK ALERT
+        ========================================================= */
+
+        async function generateAlerts() {
+
+            const box =
+                document.getElementById(
+                    "alert-result"
+                );
+
+
+            if (!box) {
+
+                return;
+
+            }
+
+
+            box.innerHTML =
+                "Generating alerts...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/police_alert"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Alert endpoint unavailable"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    data.status !==
+                    "SUCCESS"
+                ) {
+
+                    box.innerHTML =
+                        "Alert generation failed.";
+
+                    return;
+
+                }
+
+
+                box.innerHTML = `
+
+                    <strong>
+                        Alert Status
+                    </strong>
+
+                    <br><br>
+
+                    <strong>
+                        Police Alert:
+                    </strong>
+
+                    ${data.police_alert?.status || "N/A"}
+
+                    <br>
+
+                    Nearest Police Station:
+                    ${data.police_alert?.station_name || "N/A"}
+
+                    <br>
+
+                    Distance:
+                    ${data.police_alert?.distance_km ?? "N/A"}
+                    km
+
+                    <br><br>
+
+                    <strong>
+                        Bank Alert:
+                    </strong>
+
+                    ${data.bank_alert?.status || "N/A"}
+
+                    <br>
+
+                    Bank Branch:
+                    ${data.bank_alert?.branch || "N/A"}
+
+                    <br><br>
+
+                    Alert Time:
+                    ${data.alert_time || "N/A"}
+
+                `;
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Alert generation error:",
+                    error
+                );
+
+
+                box.innerHTML =
+                    "Unable to generate alerts.";
+
+            }
+
+        }
+
+
+
+        /* =========================================================
+           START SYSTEM
+        ========================================================= */
+
+        refreshMonitoring();
+
+        loadRiskScore();
+
+
+        setInterval(
+            refreshMonitoring,
+            10000
+        );
+
+
+        setInterval(
+            loadRiskScore,
+            10000
+        );
+
+
+
+        /* =========================================================
+           PAGE LOAD
+        ========================================================= */
+
+        console.log(
+            "Cybercrime Predictive Analytics System loaded:",
+            new Date().toLocaleString()
+        );
+
+    </script>
+
+
+
+    <!-- =========================================================
+         EXTERNAL JAVASCRIPT
+    ========================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='script.js') }}">
+    </script>
+
+
+</body>
+
+</html>
