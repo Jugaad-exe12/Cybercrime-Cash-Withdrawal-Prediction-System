@@ -1,6 +1,6 @@
 # 🛡️ Cybercrime Predictive Analytics & Risk Intelligence Platform
 
-![DEMO](./demo-video.mp4)
+[![Project Demo](https://img.youtube.com/vi/Wf7see8aCEA/0.jpg)](https://www.youtube.com/watch?v=Wf7see8aCEA)
 
 ### SIH-26184
 
