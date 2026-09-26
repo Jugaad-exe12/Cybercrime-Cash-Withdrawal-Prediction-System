@@ -49,5 +49,6 @@ This project is developed as a **Smart India Hackathon (SIH-26184) prototype** f
 - The system is designed as a **decision-support tool**, not an automated law-enforcement system.
 - Predictions should not be interpreted as proof that a crime will occur or that any individual is involved in criminal activity.
 - A production implementation would require appropriate **authorization, data governance, security controls, validation, and integration with relevant institutional systems**.
+- This piece of software is MIT Licensed and follows it accordingly
 
 > **From cybercrime complaints to predictive geographic intelligence — enabling earlier, data-driven and human-supervised intervention.**
