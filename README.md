@@ -1,5 +1,7 @@
 # 🛡️ Cybercrime Predictive Analytics & Risk Intelligence Platform
 
+![DEMO](./demo.png)
+
 ### SIH-26184
 
 > **Development of a Predictive Analytics Framework for Cybercrime Complaints to Forecast Likely Cash Withdrawal Locations in Advance, Enabling Generation of Actionable Intelligence for Timely and Proactive Cybercrime Intervention.**
